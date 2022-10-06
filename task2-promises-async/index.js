@@ -21,33 +21,30 @@ const rickEpisodes = fetch(`${URL}/episode`).then((response) => response.json())
 Promise.all([rickInfo, rickOrigin, rickEpisodes]).then((data) => data.map((i) => {
     const result = i.results[0];
 
-    data.indexOf(i) === 0 && console.log(`The main character of the show is ${result.name}, who is from ${result.origin.name}.`);
+    data.indexOf(i) === 0 && console.log(`\nThe main character of the show is ${result.name}, who is from ${result.origin.name}.`);
     data.indexOf(i) === 1 && console.log(`The planet ${result.name} is from dimension ${result.dimension}, which was created at ${new Date(result.created)}.`);
     data.indexOf(i) === 2 && console.log(`The list of some episodes he is in includes: ${i.results.map((episode) => {
                                 if(episode.characters.includes('https://rickandmortyapi.com/api/character/1')) {
                                     return '\n' + episode.name;
                                 }
                             })}`);
-
-    console.log('\n');
 }))
-
 
 
 // Doing the same but with Async/Await
 
 async function getRickData() {
-    const rickInfo = await fetch(`${URL}/character/?name=sanchez&status=alive&species=human`).then((response) => response.json());
-    const rickOrigin = await fetch(`${URL}/location/?name=137`).then((response) => response.json());
-    const rickEpisodes = await fetch(`${URL}/episode`).then((response) => response.json());
+    const rickInfo = fetch(`${URL}/character/?name=sanchez&status=alive&species=human`).then((response) => response.json());
+    const rickOrigin = fetch(`${URL}/location/?name=137`).then((response) => response.json());
+    const rickEpisodes = fetch(`${URL}/episode`).then((response) => response.json());
 
-    return [rickInfo, rickOrigin, rickEpisodes];
+    return await Promise.all([rickInfo, rickOrigin, rickEpisodes]);
 }
 
-getRickData().then((data)=>  data.map((i) => {
+getRickData().then((data) => data.map((i) => {
     const result = i.results[0];
 
-    data.indexOf(i) === 0 && console.log(`The main character of the show is ${result.name}, who is from ${result.origin.name}.`);
+    data.indexOf(i) === 0 && console.log(`\nThe main character of the show is ${result.name}, who is from ${result.origin.name}.`);
     data.indexOf(i) === 1 && console.log(`The planet ${result.name} is from dimension ${result.dimension}, which was created at ${new Date(result.created)}.`);
     data.indexOf(i) === 2 && console.log(`The list of some episodes he is in includes: ${i.results.map((episode) => {
                                 if(episode.characters.includes('https://rickandmortyapi.com/api/character/1')) {
