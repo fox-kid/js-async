@@ -28,8 +28,9 @@ Promise.all([rickInfo, rickOrigin, rickEpisodes]).then((data) => data.map((i) =>
                                     return '\n' + episode.name;
                                 }
                             })}`);
-}))
 
+    console.log('\n');
+}))
 
 
 
